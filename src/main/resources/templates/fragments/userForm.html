@@ -1,0 +1,34 @@
+<div th:fragment="userForm">
+    <div class="form-group">
+        <label for="formName">First name</label>
+        <input type="text" class="form-control" id="formName" placeholder="First name"
+               th:field="*{username}">
+    </div>
+
+    <div class="form-group">
+        <label for="formLastName">Last name</label>
+        <input type="text" class="form-control" id="formLastName" placeholder="Last name"
+               th:field="*{lastName}">
+    </div>
+
+    <div class="form-group">
+        <label for="formAge">Age</label>
+        <input type="text" class="form-control" id="formAge" placeholder="Age"
+               th:field="*{age}">
+    </div>
+
+    <div class="form-group">
+        <label for="formPassword" id="formPassword2">Password</label>
+        <input type="password" class="form-control" id="formPassword" placeholder="Password"
+               th:field="*{password}">
+    </div>
+
+    <div class="form-group">
+        <label for="formRole">Role</label>
+        <select multiple class="custom-select" size="2" id="formRole"
+                th:field="*{roles}">
+            <option th:each="role : ${listRoles}"
+                    th:text="${role.name}" th:value="${role.id}"></option>
+        </select>
+    </div>
+</div>

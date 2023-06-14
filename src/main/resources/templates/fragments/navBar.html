@@ -1,0 +1,12 @@
+<div th:fragment="navBar">
+    <nav class="navbar navbar-dark bg-dark"
+         style="font-size: large; height: 50px; padding-top: 0; padding-bottom: 0; padding-right: 0">
+        <span class="text-white p-1" style="font-weight: bold" th:utext="${user.getUsername}"></span>
+        <span class="text-white p-1"> with roles: </span>
+        <span class="text-white p-1" th:utext="${user.getRoles}"></span>
+        <span class="text-white mx-auto"></span>
+        <form th:action="@{/logout}" method="post" class="form-inline">
+            <button type="submit" class="btn btn-dark text-secondary font-weight-bold">Logout</button>
+        </form>
+    </nav>
+</div>

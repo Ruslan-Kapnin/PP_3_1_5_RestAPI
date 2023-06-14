@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Admin panel</title>
+</head>
+<body class="bg-light h-100">
+<div th:replace="fragments/navBar :: navBar"></div>
+<div class="container-fluid bg-light" style="padding-top: 20px; height: calc(100vh - 50px)">
+    <div class="row h-100">
+        <nav class="rounded-top col-md-2 d-none d-md-block bg-white sidebar p-0">
+            <div class="sidebar-sticky ">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="/admin">
+                            <button type="submit" class="btn btn-primary w-100 text-left">Admin</button>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user">
+                            <button type="submit" class="btn btn-white w-100 text-left text-primary">User</button>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main role="main" class="col-md-10 ml-sm-auto col-lg-10" style="padding-right: 28px; padding-left: 28px">
+            <h1>Admin panel</h1>
+            <ul class="nav nav-tabs pt-2">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin">Users table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/new_user">New User</a>
+                </li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item" style="font-weight: bold; font-size: large; background-color: whitesmoke">
+                    All users
+                </li>
+                <li class="list-group-item p-4">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Role</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="u : ${users}">
+                            <tr>
+                                <td th:utext="${u.getId}">...</td>
+                                <td th:utext="${u.getUsername}">...</td>
+                                <td th:utext="${u.getLastName}">...</td>
+                                <td th:utext="${u.getAge}">...</td>
+                                <td th:utext="${u.getRoles}">...</td>
+                                <td><a type="button" class="btn btn-info py-1 editButton" style="font-size: small"
+                                       th:href="@{/admin/edit/{id} (id=${u.getId})}">Edit</a></td>
+
+                                <td>
+                                    <a type="button" class="btn btn-danger py-1 deleteButton" style="font-size: small"
+                                       data-toggle="modal" th:href="@{/admin/delete/{id} (id=${u.getId})}">Delete</a>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <!--MODALS-->
+            <div th:replace="fragments/deleteModal"></div>
+            <div th:replace="fragments/editModal"></div>
+        </main>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script>
+    $('document').ready(function () {
+        $(".deleteButton").on('click', function (event) {
+            event.preventDefault()
+
+            let href = $(this).attr('href');
+
+            $.get(href, function (user, status) {
+                $('#deleteId').val(user.id)
+                $('#deleteName').val(user.username)
+                $('#deleteLastName').val(user.lastName)
+                $('#deleteAge').val(user.age)
+                $('#deleteRole').val(user.role)
+            })
+
+            $("#deleteForm").attr('action', href)
+
+            $('#deleteModal').modal()
+        })
+
+        $(".editButton").on('click', function (event) {
+            event.preventDefault()
+
+            let href = $(this).attr('href');
+
+            $.get(href, function (user, status) {
+                $('#editId').val(user.id)
+                $('#editName').val(user.username)
+                $('#editLastName').val(user.lastName)
+                $('#editAge').val(user.age)
+                $('#editPassword').val("")
+                $('#editRole').val(user.role)
+                $("#editForm").attr('action', href)
+            })
+
+            $('#editModal').modal()
+        })
+    })
+</script>
+</body>
+</html>
