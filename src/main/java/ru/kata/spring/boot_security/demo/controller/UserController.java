@@ -76,7 +76,7 @@ public class UserController {
     }
 
 
-    @PatchMapping("/admin/edit/{id}")
+    @PutMapping("/admin/edit/{id}")
     public String updateUser(User user) {
         if (!user.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
