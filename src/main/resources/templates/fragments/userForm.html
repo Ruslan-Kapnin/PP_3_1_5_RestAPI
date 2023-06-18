@@ -1,34 +1,30 @@
 <div th:fragment="userForm">
     <div class="form-group">
-        <label for="formName">First name</label>
-        <input type="text" class="form-control" id="formName" placeholder="First name"
-               th:field="*{username}">
+        <label for="newUsername">First name</label>
+        <input type="text" class="form-control" id="newUsername" placeholder="First name"
+               name="username">
     </div>
 
     <div class="form-group">
-        <label for="formLastName">Last name</label>
-        <input type="text" class="form-control" id="formLastName" placeholder="Last name"
-               th:field="*{lastName}">
+        <label for="newLastName">Last name</label>
+        <input type="text" class="form-control" id="newLastName" placeholder="Last name"
+               name="lastName">
     </div>
 
     <div class="form-group">
-        <label for="formAge">Age</label>
-        <input type="text" class="form-control" id="formAge" placeholder="Age"
-               th:field="*{age}">
+        <label for="newAge">Age</label>
+        <input type="text" class="form-control" id="newAge" placeholder="Age"
+               name="age">
     </div>
 
     <div class="form-group">
-        <label for="formPassword" id="formPassword2">Password</label>
-        <input type="password" class="form-control" id="formPassword" placeholder="Password"
-               th:field="*{password}">
+        <label for="newPassword" id="formPassword2">Password</label>
+        <input type="password" class="form-control" id="newPassword" placeholder="Password"
+               name="password">
     </div>
 
     <div class="form-group">
-        <label for="formRole">Role</label>
-        <select multiple class="custom-select" size="2" id="formRole"
-                th:field="*{roles}">
-            <option th:each="role : ${listRoles}"
-                    th:text="${role.name}" th:value="${role.id}"></option>
-        </select>
+        <label for="newRole">Role</label>
+        <select multiple class="custom-select" size="2" id="newRole" name="roles"></select>
     </div>
 </div>

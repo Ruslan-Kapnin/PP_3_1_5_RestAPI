@@ -30,21 +30,27 @@
                 </ul>
             </div>
         </nav>
+
+
         <main role="main" class="col-md-10 ml-sm-auto col-lg-10" style="padding-right: 28px; padding-left: 28px">
             <h1>Admin panel</h1>
+
             <ul class="nav nav-tabs pt-2">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/admin">Users table</a>
+                    <a class="nav-link" href="" id="usersTableBtn">Users table</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/new_user">New User</a>
+                    <a class="nav-link" href="" id="newUserBtn">New User</a>
                 </li>
             </ul>
+
             <ul class="list-group">
-                <li class="list-group-item" style="font-weight: bold; font-size: large; background-color: whitesmoke">
-                    All users
+                <li class="list-group-item" style="font-weight: bold; font-size: large; background-color: whitesmoke"
+                    id="ListHeader">All users
                 </li>
-                <li class="list-group-item p-4">
+
+                <!--//////////////////////////TABLE-->
+                <li class="list-group-item p-4" id="usersTable">
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -57,25 +63,17 @@
                             <th>Delete</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <th:block th:each="u : ${users}">
-                            <tr>
-                                <td th:utext="${u.getId}">...</td>
-                                <td th:utext="${u.getUsername}">...</td>
-                                <td th:utext="${u.getLastName}">...</td>
-                                <td th:utext="${u.getAge}">...</td>
-                                <td th:utext="${u.getRoles}">...</td>
-                                <td><a type="button" class="btn btn-info py-1 editButton" style="font-size: small"
-                                       th:href="@{/admin/edit/{id} (id=${u.getId})}">Edit</a></td>
-
-                                <td>
-                                    <a type="button" class="btn btn-danger py-1 deleteButton" style="font-size: small"
-                                       data-toggle="modal" th:href="@{/admin/delete/{id} (id=${u.getId})}">Delete</a>
-                                </td>
-                            </tr>
-                        </th:block>
-                        </tbody>
+                        <tbody id="tbody"></tbody>
                     </table>
+                </li>
+
+                <!--//////////////////////////New User Form-->
+                <li class="list-group-item p-4" id="newUser">
+                    <form class="text-center mx-auto" style="font-weight: bold; max-width: 300px"
+                          id="newUserForm">
+                        <div th:replace="fragments/userForm" class=""></div>
+                        <button type="submit" class="btn btn-success">Add new user</button>
+                    </form>
                 </li>
             </ul>
             <!--MODALS-->
@@ -97,45 +95,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
-<script>
-    $('document').ready(function () {
-        $(".deleteButton").on('click', function (event) {
-            event.preventDefault()
-
-            let href = $(this).attr('href');
-
-            $.get(href, function (user, status) {
-                $('#deleteId').val(user.id)
-                $('#deleteName').val(user.username)
-                $('#deleteLastName').val(user.lastName)
-                $('#deleteAge').val(user.age)
-                $('#deleteRole').val(user.role)
-            })
-
-            $("#deleteForm").attr('action', href)
-
-            $('#deleteModal').modal()
-        })
-
-        $(".editButton").on('click', function (event) {
-            event.preventDefault()
-
-            let href = $(this).attr('href');
-
-            $.get(href, function (user, status) {
-                $('#editId').val(user.id)
-                $('#editName').val(user.username)
-                $('#editLastName').val(user.lastName)
-                $('#editAge').val(user.age)
-                $('#editPassword').val("")
-                $('#editRole').val(user.role)
-                $("#editForm").attr('action', href)
-            })
-
-            $('#editModal').modal()
-        })
-    })
-</script>
+<script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
 </body>
 </html>

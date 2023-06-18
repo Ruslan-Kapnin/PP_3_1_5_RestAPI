@@ -21,7 +21,7 @@
             <div class="sidebar-sticky ">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a href="/admin" th:if="${isAdmin}">
+                        <a href="/admin" id="isAdmin">
                             <button type="submit" class="btn btn-white w-100 text-left">Admin</button>
                         </a>
                     </li>
@@ -39,7 +39,7 @@
                 <li class="list-group-item" style="font-weight: bold; font-size: large; background-color: whitesmoke">
                     About user
                 </li>
-                <li class="list-group-item p-0">
+                <li class="list-group-item p-4">
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -50,17 +50,7 @@
                             <th>Role</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <th:block>
-                            <tr>
-                                <td th:utext="${user.getId}">...</td>
-                                <td th:utext="${user.getUsername}">...</td>
-                                <td th:utext="${user.getLastName}">...</td>
-                                <td th:utext="${user.getAge}">...</td>
-                                <td th:utext="${user.getRoles}">...</td>
-                            </tr>
-                        </th:block>
-                        </tbody>
+                        <tbody id="tbody"></tbody>
                     </table>
                 </li>
             </ul>
@@ -81,5 +71,33 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script>
+    async function buildPage() {
+        let response = await fetch("/loggedUser")
+        let user = await response.json()
+
+        $('document').ready(async function () {
+            $('#nav_username').text(user.username)
+            $('#nav_roles').text(getRoles(user))
+            $("#tbody").append("<tr>" +
+                "<td>" + user.id + "</td>" +
+                "<td>" + user.username + "</td>" +
+                "<td>" + user.lastName + "</td>" +
+                "<td>" + user.age + "</td>" +
+                "<td>" + getRoles(user) + "</td>" +
+                "</tr>"
+            )
+            let AdminLink = $('#isAdmin')
+            AdminLink.hide()
+            user.roles.forEach(r => r.name === "Admin" ? AdminLink.show() : r)
+        })
+    }
+
+    function getRoles(user) {
+        return user.roles.map(role => role['name'])
+    }
+
+    buildPage()
+</script>
 </body>
 </html>

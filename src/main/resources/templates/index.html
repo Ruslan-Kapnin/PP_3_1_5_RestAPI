@@ -12,7 +12,12 @@
     <title>Index page</title>
 </head>
 <body>
-<h1>Welcome to Index page!</h1>
+<br>
+<h1 align="center">Welcome to Index page!</h1>
+<br>
+<form th:action="@{/logout}" method="post" class="form-inline">
+    <button type="submit" class="btn btn-dark text-secondary font-weight-bold mx-auto">Logout</button>
+</form>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -12,57 +12,50 @@
                 <div class="modal-body">
 
 
-                    <form class="text-center mx-auto" style="font-weight: bold; max-width: 300px" th:method="PUT"
-                          id="editForm" action="" th:object="${user}">
+                    <form class="text-center mx-auto" style="font-weight: bold; max-width: 300px" th:method="put"
+                          id="editForm" action="">
+                        <section>
+                            <fieldset disabled>
+                                <div class="form-group">
+                                    <label for="editId">ID</label>
+                                    <input type="text" class="form-control" id="editId" placeholder="ID">
+                                </div>
+                            </fieldset>
 
-                        <fieldset disabled>
                             <div class="form-group">
-                                <label for="editId">ID</label>
-                                <input type="text" class="form-control" id="editId" placeholder="ID"
-                                       th:field="*{id}">
+                                <label for="editName">First name</label>
+                                <input type="text" class="form-control" id="editName" placeholder="First name"
+                                       name="username">
                             </div>
-                        </fieldset>
 
-                        <div class="form-group">
-                            <label for="editName">First name</label>
-                            <input type="text" class="form-control" id="editName" placeholder="First name"
-                                   th:field="*{username}">
-                        </div>
+                            <div class="form-group">
+                                <label for="editLastName">Last name</label>
+                                <input type="text" class="form-control" id="editLastName" placeholder="Last name"
+                                       name="lastName">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="editLastName">Last name</label>
-                            <input type="text" class="form-control" id="editLastName" placeholder="Last name"
-                                   th:field="*{lastName}">
-                        </div>
+                            <div class="form-group">
+                                <label for="editAge">Age</label>
+                                <input type="text" class="form-control" id="editAge" placeholder="Age" name="age">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="editAge">Age</label>
-                            <input type="text" class="form-control" id="editAge" placeholder="Age"
-                                   th:field="*{age}">
-                        </div>
+                            <div class="form-group">
+                                <label for="editPassword" id="formPassword2">Password</label>
+                                <input type="password" class="form-control" id="editPassword" placeholder="Password"
+                                       name="password">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="editPassword" id="formPassword2">Password</label>
-                            <input type="password" class="form-control" id="editPassword" placeholder="Password"
-                                   th:field="*{password}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="editRole">Role</label>
-                            <select multiple class="custom-select" size="2" id="editRole"
-                                    th:field="*{roles}">
-                                <option th:each="role : ${listRoles}"
-                                        th:text="${role.name}" th:value="${role.id}"></option>
-                            </select>
-                        </div>
+                            <div class="form-group">
+                                <label for="editRole">Role</label>
+                                <select multiple class="custom-select" size="2" id="editRole" name="roles"></select>
+                            </div>
 
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                            <button type="submit" class="btn btn-primary" id="editBtn">Edit</button>
-                        </div>
-
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" id="editBtn">Edit</button>
+                            </div>
+                        </section>
                     </form>
                 </div>
             </div>

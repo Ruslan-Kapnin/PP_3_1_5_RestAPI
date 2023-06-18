@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -20,13 +21,22 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void save(User user) {
+        if (!user.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userRepository.save(user);
     }
 
     @Override
     public void update(User user) {
+        if (!user.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userRepository.save(user);
     }
 
@@ -66,13 +76,11 @@ public class UserServiceImpl implements UserService {
         Role roleUser = new Role("User");
         roleRepository.save(roleAdmin);
         roleRepository.save(roleUser);
-        //Password: admin
-        save(new User("admin", "$2a$12$AegpJnpe9XwRq8/xGowYUutLOn50gyrg0GeB2SU5cyufrcdYX9QGq", "authority", 999, roleAdmin));
-        //Password: user
-        save(new User("user", "$2a$12$v1CKeFl.P46zabf.x1iD/uGNyCw7M/4wWEEGgFr2EPJ06QRE3oXdu", "Just User", 1, roleUser));
-        save(new User("Walter", "$2a$12$geIevxWdyhwXVZbPgwcH..t.uBZDvdRkx4RvIApNxdiM8jvD1lEHS", "White", 52, roleAdmin));
-        save(new User("Jesse", "$2a$12$fn/zm/m5JRpgHc6abXDQyOqQVaY3TFf6n00uUAAvuswV63iIWRlGy", "Pinkman", 25, roleUser));
-        save(new User("Saul", "$2a$12$2FK30Zv.DSDELSlC8UfcJegibzelgxLtdbY9B/3h/dZrJyFt5y1e.", "Goodman", 32, roleUser));
-        save(new User("Mike", "$2a$12$aXr8zPkZY3uJu7WR0vSb4eNOtbq3yp238T1bcoEQiGJlHKNHSLN1S", "Ehrmantraut", 69, roleUser));
+        save(new User("admin", "admin", "authority", 999, roleAdmin));
+        save(new User("user", "user", "Just User", 1, roleUser));
+        save(new User("Walter", "danger", "White", 52, roleAdmin));
+        save(new User("Jesse", "bitch", "Pinkman", 25, roleUser));
+        save(new User("Saul", "jimmy", "Goodman", 32, roleUser));
+        save(new User("Mike", "HalfMeasures", "Ehrmantraut", 69, roleUser));
     }
 }

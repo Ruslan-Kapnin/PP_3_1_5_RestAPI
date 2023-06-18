@@ -1,87 +1,61 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
 
-
-@Controller
+@RestController
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    //<<<---------------------Get Mappings--------------------->>>\\
-    @GetMapping("/admin")
-    public String getAdminPanel(ModelMap model) {
+    @GetMapping("/admin/user/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.getById(id));
+    }
+
+    @GetMapping("/loggedUser")
+    public ResponseEntity<User> getLoggedUser() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(loggedUser);
+    }
+
+    @GetMapping("/admin/users")
+    public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("user", loggedUser);
-        model.addAttribute("listRoles", userService.getRoles());
-        return "admin";
+        return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/user")
-    public String getUser(ModelMap model) {
-        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        boolean isAdmin = loggedUser.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_Admin"));
-        model.addAttribute("isAdmin", isAdmin);
-        model.addAttribute("user", loggedUser);
-        model.addAttribute("listRoles", userService.getRoles());
-        return "user";
+    @GetMapping("/admin/roles")
+    public ResponseEntity<List<Role>> getRoles() {
+        return ResponseEntity.ok(userService.getRoles());
     }
 
-    @GetMapping("/admin/new_user")
-    public String newUser(ModelMap model) {
-        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.addAttribute("user", loggedUser);
-        model.addAttribute("newUser", new User());
-        model.addAttribute("listRoles", userService.getRoles());
-        return "new_user";
+
+    @DeleteMapping("/admin/user/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
+        userService.remove(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/admin/*/{id}")
-    @ResponseBody
-    public User getUserForModal(@PathVariable("id") Long id) {
-        return userService.getById(id);
+    @PutMapping("/admin/user/{id}")
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody User user) {
+        System.out.println(user);
+        userService.update(user);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
-
-    //^^^---------------------Get Mappings---------------------^^^\\
-
-
 
     @PostMapping("/admin/new_user")
-    public String addUser(@ModelAttribute("user") User user) {
-        if (!user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
+    public ResponseEntity<HttpStatus> addUser(@RequestBody User user) {
         userService.save(user);
-        return "redirect:/admin";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-
-    @DeleteMapping("/admin/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.remove(id);
-        return "redirect:/admin";
-    }
-
-
-    @PutMapping("/admin/edit/{id}")
-    public String updateUser(User user) {
-        if (!user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-        userService.update(user);
-        return "redirect:/admin";
-    }
 }

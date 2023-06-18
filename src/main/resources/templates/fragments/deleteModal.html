@@ -10,49 +10,40 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <fieldset disabled>
-
-                        <form class="text-center mx-auto" style="font-weight: bold; max-width: 300px"
-                              th:object="${user}">
+                    <form class="text-center mx-auto" style="font-weight: bold; max-width: 300px" th:method="delete"
+                          action="" id="deleteForm">
+                        <fieldset disabled>
                             <div class="form-group">
                                 <label for="deleteId">ID</label>
-                                <input type="text" class="form-control" id="deleteId" placeholder="ID"
-                                       th:field="*{id}">
+                                <input type="text" class="form-control" id="deleteId" placeholder="ID">
                             </div>
                             <div class="form-group">
                                 <label for="deleteName">First name</label>
-                                <input type="text" class="form-control" id="deleteName" placeholder="First name"
-                                       th:field="*{username}">
+                                <input type="text" class="form-control" id="deleteName" placeholder="First name">
                             </div>
 
                             <div class="form-group">
                                 <label for="deleteLastName">Last name</label>
-                                <input type="text" class="form-control" id="deleteLastName" placeholder="Last name"
-                                       th:field="*{lastName}">
+                                <input type="text" class="form-control" id="deleteLastName" placeholder="Last name">
                             </div>
 
                             <div class="form-group">
                                 <label for="deleteAge">Age</label>
-                                <input type="text" class="form-control" id="deleteAge" placeholder="Age"
-                                       th:field="*{age}">
+                                <input type="text" class="form-control" id="deleteAge" placeholder="Age">
                             </div>
 
                             <div class="form-group">
                                 <label for="deleteRole">Role</label>
-                                <select multiple class="custom-select" size="2" id="deleteRole"
-                                        th:field="*{roles}">
-                                    <option th:each="role : ${listRoles}"
-                                            th:text="${role.name}" th:value="${role.id}"></option>
-                                </select>
+                                <select multiple class="custom-select" size="2" id="deleteRole"></select>
                             </div>
-                        </form>
 
-                    </fieldset>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <form th:method="DELETE" id="deleteForm" action="">
-                        <button type="submit" class="btn btn-danger" id="deleteBtn">Delete</button>
+
+                        </fieldset>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger" id="deleteBtn">Delete</button>
+                        </div>
                     </form>
                 </div>
             </div>
